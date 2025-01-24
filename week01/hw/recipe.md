@@ -2,7 +2,7 @@
 
 ![Image of cooked garlic butter shrimp with sauce and seasoning.](img/Garlic-Butter-Shrimp.jpg)
 
-A very quick and easy recipe for juicy shrimp tossed in a simple garlic and lemon sauce. 
+A very quick and easy recipe for juicy shrimp tossed in a simple garlic and lemon sauce.
 
 | Time | 
 |-------|
