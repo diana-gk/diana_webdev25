@@ -1,0 +1,7 @@
+I thought the article was pretty straightforward and to the point. 
+The purpose of wireframing is to help stakeholders get an idea of how a website 
+is going to function. It's good practice to communicate with stakeholders and
+customers frequently is possible and to ask questions. When designing wireframes, 
+we should keep in mind who our intended audience is and where we want things to go 
+and how they should flow. Sketches should be simple, and we can use tools to create
+wireframes of varying complexity based on our audience. 
