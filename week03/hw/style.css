@@ -60,14 +60,23 @@ aside {
   float:right;
 }
 
-a:link, a:visited {
+nav ul li a{
   background-color: rgba(255, 255, 255, 0.572);
   color: black;
   border: 2px solid green;
-  padding: 10px 20px;
+  padding: 20px 20px;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
+  display: block;
+}
+
+a {
+  background-color: rgba(255, 255, 255, 0.572);
+  color: black;
+  border: 2px solid green;
+  padding: 20px 20px;
+  text-align: center;
+  text-decoration: none;
 }
 
 a:hover, a:active {
