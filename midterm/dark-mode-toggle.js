@@ -11,6 +11,10 @@ document.addEventListener('DOMContentLoaded', function() {
         enableDarkMode();
         toggleInput.checked = true;
     }
+
+    // snippet of code I learned 
+    //can use the querySelector to select all icons with the .game-icon img class and replace their
+    //img srcs with an alternate photo
     
     function switchCardIcons(toDark) {
         const cardIcons = document.querySelectorAll('.game-icon img');
@@ -24,7 +28,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    
+
+
+        
     function enableDarkMode() {
         document.body.classList.add('dark-mode');
         document.documentElement.classList.add('dark-mode');

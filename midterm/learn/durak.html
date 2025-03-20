@@ -41,8 +41,8 @@
         }
 
         .logo {
-            width: 60px;
-            height: 60px;
+            width: 150px;
+            height: auto;
             margin-right: 20px;
         }
 
@@ -95,25 +95,6 @@
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
 
-        .card-values {
-            display: flex;
-            gap: 10px;
-            margin: 20px 0;
-        }
-
-        .card {
-            width: 40px;
-            height: 50px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.2rem;
-            background-color: #f9f9f9;
-            color: #333; 
-            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
 
         @media only screen and (max-width: 767px) {
             header {
@@ -144,7 +125,9 @@
 <body>
     <header>
         <div class="header-content">
+            <a href="../index.html">
             <img src="../img/cardscardscards1.png" alt="Card game logo" class="logo">
+            </a>
             <div class="title-container">
                 <h1>Durak</h1>
                 <h2>Rules of Durak</h2>
@@ -166,18 +149,7 @@
         </p>
 
         <p class="rule-section">
-            It is played with 36 cards of the standard deck, from lowest to highest value:
-            <div class="card-values">
-                <div class="card">6</div>
-                <div class="card">7</div>
-                <div class="card">8</div>
-                <div class="card">9</div>
-                <div class="card">10</div>
-                <div class="card">J</div>
-                <div class="card">Q</div>
-                <div class="card">K</div>
-                <div class="card">A</div>
-            </div>
+            It is played with 36 cards of the standard deck, from lowest to highest value from 6 to ace, ace being highest.
         </p>
 
         <h3 class="section-title">How to play Durak</h3>

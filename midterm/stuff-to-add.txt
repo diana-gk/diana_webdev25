@@ -1,0 +1,15 @@
+add:
+
+-fix toggle button on the in game screen so it doesnt appear by default
+- add all of the sidebar pages/links
+- add chat button, add video buttons in game
+- add login/sign up pages
+- add social media picture icons
+- add all learn pages
+- refine color choices, make sure everything looks uniform across the pages for 
+both dark and light mode
+
+
+
+- actually implement game functionality for each game, or at least one would be nice
+- add a database for all the users
