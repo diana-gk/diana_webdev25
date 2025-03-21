@@ -151,12 +151,12 @@ header {
 
 .learn-play-bar .L:hover {
   color: #FFFFFF;
-  background-color: rgba(0, 128, 0, 0.637);
+  background-color: rgba(2, 79, 2, 0.637);
 }
 
 .learn-play-bar .P:hover {
   color: white;
-  background-color: blue;
+  background-color: rgba(3, 47, 66, 0.677);
 }
 
 .learn-play-bar .active-mode {
