@@ -1,4 +1,3 @@
-// Refactored Game Mode Toggle for HTML-defined dropdowns
 document.addEventListener('DOMContentLoaded', function() {
     const learnButton = document.querySelector('.L');
     const playButton = document.querySelector('.P');
@@ -27,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function setMode(mode) {
-        // Skip if mode hasn't changed after initialization
+        // skip if mode hasn't changed after initialization
         if (mode === currentMode && isInitialized) return;
         
         isInitialized = true;
@@ -56,10 +55,13 @@ document.addEventListener('DOMContentLoaded', function() {
         gameIcons.forEach(gameIcon => {
             const link = gameIcon.querySelector('a');
             const gameName = link.textContent.trim();
+            //this line below searches for a valid game name, and if there are any spaces in the game
+            //name it replaces whitespace with dashes
             const gamePath = games[gameName] || gameName.toLowerCase().replace(/\s+/g, '-');
             
             link.href = isLearnMode ? baseUrl + gamePath + '.html' : '#';
             
+            //do not display dropdown if learnmode is selected. else display
             const dropdown = gameIcon.querySelector('.dropdown-content');
             if (dropdown) {
                 dropdown.style.display = isLearnMode ? 'none' : '';
@@ -73,16 +75,17 @@ document.addEventListener('DOMContentLoaded', function() {
     gameIcons.forEach(gameIcon => {
         const link = gameIcon.querySelector('a');
         
+        //the parameter e represents the element affected 
         link.addEventListener('click', function(e) {
-            // Only handle clicks if we're in play mode
+            // only handle clicks if we're in play mode
             if (currentMode === 'play') {
-                e.preventDefault(); // Prevent default navigation
+                e.preventDefault(); // prevent default navigation
                 
                 const dropdown = this.parentNode.querySelector('.dropdown-content');
                 if (dropdown) {
                     dropdown.classList.toggle('show');
                     
-                    // Close all other open dropdowns
+                    //  close all other open dropdowns
                     document.querySelectorAll('.dropdown-content.show').forEach(openDropdown => {
                         if (openDropdown !== dropdown) {
                             openDropdown.classList.remove('show');

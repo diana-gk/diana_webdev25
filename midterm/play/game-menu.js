@@ -6,10 +6,5 @@ document.addEventListener('DOMContentLoaded', function() {
         menuToggle.addEventListener('click', function() {
             sidebar.classList.toggle('hidden');
             gameArea.classList.toggle('full');
-            
-            const icon = menuToggle.querySelector('img');
-            if (sidebar.classList.contains('hidden')) {
-            } else {
-            }
         });
     });
