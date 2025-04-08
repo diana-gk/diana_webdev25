@@ -107,7 +107,7 @@ function updateOpponentCards(playerName, cardCount) {
         for (let i = 0; i < cardCount; i++) {
             const cardBackDiv = document.createElement('div');
             cardBackDiv.className = 'opponent-card-back';
-            opponentCards.appendChild(cardBack);
+            opponentCards.appendChild(cardBackDiv);
         }
     }
 }
