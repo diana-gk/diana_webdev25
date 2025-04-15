@@ -42,6 +42,7 @@ function shuffle(deck) {
         const trumpSuit = trumpCard.suit;
         
         displayTrumpCard(trumpCard);
+        //did not yet write this function but i will
         
         const player1Hand = deck.splice(0, 6);
         const player2Hand = deck.splice(0, 6);
