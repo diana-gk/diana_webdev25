@@ -1,25 +1,31 @@
-This is my midterm project submission for the Sp25 Web Dev Class.
+This is my final project submission for the Sp25 Web Dev Class.
 
-This is the beginning of a card game website I am implementing.
+Since the midterm, my primary focus was implementing the game functionality for just one game, Durak, the bot play mode, which proved a lot longer and harder than I anticipated, but it helped since I was able to find other open source code for the game and I had also previously written some of my own in python before, so I was able to reuse a lot of logic, it just took a while converting it all to JS language. undertaking this project reminded me why i never finished this website in the first place when i tried to make it last time.
 
-I have implemented a home page, one sample rule page, and one sample "free play" page for the Durak game only. I also implemented a dark mode and light mode toggle button. Also, clicking on the learn/play buttons will change which links the card icons redirect to without having to leave the page. Cool stuff.
-
-I still have yet to create most of my links, to other games' rules and actual in game implementation. I ended up working with javascript a fair bit more than I expected to be, but it was fun. Shout out W3 schools for the guidance. 
-
-I marked which snippets of code I wanted to highlight that I figured out online in comments within the .js file itself, hopefully that suffices.
+I also added social media icons, and responsiveness for mobile sizing.
 
 
-Stuff to add in the future to this website:
+stuff I want to try to add before final submission:
+- stockpile kozer/trump icon when stockpile ends
+- organize the cards in the player's hand
 
+- fix perevodnoy function so they can't pass in the middle of the turn 
+- allow other players to attack "out of turn" once primary fight is over
+
+
+
+below is all the other stuff i did not get to and will not before final submission 
+For the buttons/pages, I could probably try to add them visually, but they likely would not actually function online 
+--------------------------
+
+other stuff to add:
 - add all of the sidebar pages/links
 - add chat button, add videochat buttons in game
 - add login/sign up pages
-- add social media picture icons
 - add all learn pages
-- in the end, refine color choices, make sure everything looks uniform across the pages for both dark and light mode
 
 
 harder stuff to do:
-- add game functionality to all game options, or at least one!
-- add a database for all the users
-- learn more about how to get a live chat/live video running, probaly server/network related stuff
+- add a database for all the user accounts
+- get a live chat/live video running, probaly server/network related stuff
+- online multiplayer would be dope, with private rooms/servers and public ones

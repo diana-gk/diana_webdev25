@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Durak Game - cardscardscards</title>
+    <link rel="stylesheet" href="game-style.css" />   
+</head>
+<body>
+    <button class="menu-toggle" id="menuToggle">
+        ≡
+    </button>
+
+    <div class="sidebar hidden" id="sidebar">
+        <br/>    
+        <br/>
+        <br/>
+        <div class="menu-divider"></div>
+
+        <a href="#" class="menu-item">
+            <img src="" alt="" />
+            Scores
+        </a>
+        
+        <a href="#" class="menu-item" id="settingsLink">
+            <img src="" alt="" />
+            Settings
+        </a>
+        <a href="#" class="menu-item">
+            <img src="" alt="" />
+            Friends
+        </a>
+        <a href="#" class="menu-item">
+            <img src="" alt="" />
+            Clubs
+        </a>
+       
+        <a href="#" class="menu-item">
+            <img src="" alt="" />
+            Leaderboards
+        </a>
+       
+        <a href="#" class="menu-item">
+            <img src="" alt="" />
+            Statistics
+        </a>
+       
+       
+        <div class="menu-divider"></div>
+        <a href="../../index.html" class="menu-item" id="leave">
+            <img src="" alt="" />
+            Leave Game
+        </a>
+        <a href="#" class="menu-item" id="helpLink">
+            <img src="" alt="" />
+            Help
+        </a>
+        <div class="follow-text">
+            Follow us for tips and updates
+        </div>
+        <div class="social-links">
+            <a href="#"><img src="../../img/twitter-icon.svg" alt="Twitter/X" /></a>
+            <a href="#"><img src="../../img/instagram-icon.svg" alt="Instagram" /></a>
+            <a href="#"><img src="../../img/facebook-icon.svg" alt="Facebook" /></a>
+        </div>    
+        
+        
+    <div class="menu-divider"></div>
+
+    <div class="home">
+        <a href="../../index.html">
+            <img src="../../img/cardscardscards1.png" alt="logo" />
+        </a>
+    </div>
+
+
+    </div>
+
+
+    
+
+    
+
+    <!-- Game Area -->
+    <div class="game-area full" id="gameArea">
+
+        <!-- Opponent Area -->
+        <div class="opponent-area">
+        </div>
+
+        <!-- Fighting area -->
+        <div class="arena"> 
+            <div id="gameStatus" class="game-status">
+                Waiting for game to start...
+            </div>
+            
+            <div id="cardArea" class="card-area">
+            </div>
+            
+            <div id="actionButtons" class="action-buttons">
+                <button id="attackBtn" class="game-btn">Attack</button>
+                <button id="finishAttackBtn" class="game-btn">Finish Attack</button>
+                <button id="defendBtn" class="game-btn">Defend</button>
+                <button id="takeCardsBtn" class="game-btn">Take Cards</button>
+                <button id="passBtn" class="game-btn" style="display: none;">Pass</button>
+            </div>
+        </div>    
+
+        <div class="game-table">
+            <div class="player-name">Player 1</div>
+        
+            <!-- Player Area -->
+            <div class="hand-container">
+            </div>
+        </div>
+
+        <aside class="stockpile" id="stockpile">
+            <div class="stockpile-card">
+                <div class="stockpile-div"></div>
+            </div>
+            <div class="kozer" id="kozer" style = "display: block">
+            </div>
+        </aside>
+        
+    </div>
+
+    <!-- Settings Modal -->
+<div id="settingsModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Game Settings</h2>
+        
+        <div class="setting">
+            <label>
+                <input type="checkbox" id="perevodnoyMode">
+                Perevodnoy Mode (Transferable Defense)
+            </label>
+        </div>
+        
+        <div class="setting">
+            <label>Bot Difficulty:</label>
+            <select id="botDifficulty">
+                <option value="easy">Easy</option>
+                <option value="medium" selected>Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+        </div>
+        
+        <div class="setting">
+            <label>Number of Players:</label>
+            <select id="numPlayers">
+                <option value="2">2 Players (1 Bot)</option>
+                <option value="3" selected>3 Players (2 Bots)</option>
+                <option value="4">4 Players (3 Bots)</option>
+            </select>
+        </div>
+        
+        <button id="newGame" class="game-btn">New Game</button>
+    </div>
+</div>
+
+<!-- Help Modal -->
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Durak - Game Rules</h2>
+            
+            <div class="rules">
+                <h3>Basic Rules</h3>
+                <p>Durak (Russian for "fool") is a traditional card game where the objective is to get rid of all your cards. The last player with cards becomes the "durak" (fool).</p>
+                
+                <h3>Setup</h3>
+                <p>- Players receive 6 cards each</p>
+                <p>- One card is turned face up to determine the trump suit</p>
+                <p>- The player with the lowest trump card attacks first</p>
+                
+                <h3>Gameplay</h3>
+                <p>- The attacker plays a card to attack</p>
+                <p>- The defender must beat it with a higher card of the same suit or any trump</p>
+                <p>- If the defender succeeds, the attacker can play another card of a rank already on the table</p>
+                <p>- Up to 6 attack cards can be played in a round</p>
+                <p>- If the defender fails, they must take all cards in play</p>
+                <p>- If all attacks are defended, cards are discarded and the defender becomes the next attacker</p>
+                
+                <h3>Perevodnoy Variant</h3>
+                <p>If enabled, a defender can "pass" an attack to the next player by playing a card of the same rank. The defender then becomes the attacker.</p>
+                
+                <h3>End of Game</h3>
+                <p>After the deck is empty, players who run out of cards leave the game. The last player with cards is the "durak".</p>
+            </div>
+            
+            <div class="modal-buttons">
+                <button id="helpNewGameBtn" class="game-btn">Start New Game</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game-script.js"></script>
+</body>
+</html>
