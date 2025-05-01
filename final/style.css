@@ -1,0 +1,528 @@
+@import url('https://fonts.googleapis.com/css2?family=Linden+Hill:ital@0;1&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background-color: rgb(5, 52, 25);
+  background-image: url(img/greenbg.png);
+  background-size: cover;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Linden Hill", serif;
+  padding-bottom: 70px;
+  background-image: url(img/greenbg.png);
+}
+
+.linden-hill-regular {
+  font-family: "Linden Hill", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.linden-hill-regular-italic {
+  font-family: "Linden Hill", serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+header {
+  background-color: rgba(255, 255, 255, 0.2);
+  width: 100%;
+  height: 150px;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.black-bar {
+  height: 20px;
+  width: 100%;
+  background-color: black;
+  position: relative;
+  z-index: 10;
+}
+
+.home {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 5px;
+  font-size: 0;
+  height: 150px;
+  display: flex;
+  align-items: center;
+}
+
+.home img {
+  max-height: 200px;
+  width: auto;
+}
+
+.right-side-container {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 10px 20px;
+  gap: 15px;
+}
+
+.login-signup {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.login-signup a {
+  background-color: rgb(202, 194, 194);
+  border: 2px solid #222;
+  border-radius: 13%;
+  padding: 10px 40px;
+  text-decoration: none;
+  color: #000;
+  font-size: 20px;
+  width: 150px;
+}
+
+.login-signup a:hover {
+  color: white;
+  background-color: rgb(173, 3, 3);
+}
+
+.app-downloads {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.app-downloads img {
+  width: 150px;
+  height: auto;
+}
+
+.learn-play-bar {
+  margin-top: 3%;
+  margin-bottom: 3%;
+  width: 100%;
+  text-align: center;
+  height: auto;
+}
+
+.learn-play-bar aside {
+  display: inline-block;
+}
+
+.learn-play-bar img {
+  width: 30px;
+  height: 30px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.learn-play-bar .L, 
+.learn-play-bar .P {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 30px;
+  border: 2px solid black;
+  border-radius: 20px;
+  text-decoration: none;
+  color: black;
+  font-size: 30px;
+  background-color: rgba(196, 195, 196, 0.968);
+}
+
+.learn-play-bar .L {
+  margin-right: 20px;
+}
+
+.learn-play-bar .L:hover {
+  color: #FFFFFF;
+  background-color: rgba(2, 79, 2, 0.637);
+}
+
+.learn-play-bar .P:hover {
+  color: white;
+  background-color: rgba(3, 47, 66, 0.677);
+}
+
+.learn-play-bar .active-mode {
+  background-color: #222;
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.learn-play-bar .L.active-mode::after,
+.learn-play-bar .P.active-mode::after {
+  content: "✓";
+  margin-left: 5px;
+}
+
+.games-box {
+  display: flex;
+  flex-direction: row;    
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 20; 
+}
+
+.game-icon {
+  position: relative;
+  flex: 0 0 33%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 5px;
+  padding: 1rem;
+  z-index: 21;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.game-icon a {
+  display: flex;
+  flex-direction: row;
+  text-decoration: none;
+  color: white;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 20px;
+  min-width: 150px;
+  position: relative;
+  z-index: 22;
+}
+
+.game-icon img {
+  width: 100px;
+  height: 100px;
+}
+
+.game-icon a img:hover {
+  rotate: 30deg;
+}
+
+.learn-style a {
+  color: #e8f5e9;
+}
+
+.play-style a {
+  color: #e3f2fd;
+}
+
+body.learn-mode {
+  background-color: rgba(5, 52, 25, 0.95);
+}
+
+body.play-mode {
+  background-color: rgba(5, 52, 25, 0.9);
+}
+
+.game-icon.learn-style {
+  background-color: rgba(0, 128, 0, 0.2);
+}
+
+.game-icon.play-style {
+  background-color: rgba(0, 0, 255, 0.1);
+}
+
+.game-icon.learn-style:hover {
+  background-color: rgba(0, 128, 0, 0.4);
+  transform: translateY(-5px);
+}
+
+.game-icon.play-style:hover {
+  background-color: rgba(0, 0, 255, 0.3);
+  transform: translateY(-5px);
+}
+
+.dark-mode-toggle {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 1; 
+  padding: 8px 15px;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+footer .dark-mode-toggle {
+  position: relative;
+  margin: 50px auto;
+  left: auto;
+  transform: none;
+  z-index: 1;
+}
+
+.toggle-icon {
+  font-size: 20px;
+}
+
+.toggle-text {
+  font-family: "Linden Hill", serif;
+  color: #222;
+  font-size: 16px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.game-icon.dropdown {
+  position: relative;
+}
+
+.game-icon.dropdown:hover,
+.game-icon.dropdown:focus-within,
+.game-icon.dropdown.active {
+  z-index: 9999;
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%; 
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #f1f1f1;
+  min-width: 180px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  margin-top: 10px;
+  border-radius: 4px;
+  z-index: 999999; 
+}
+
+.dropdown-content a {
+  color: black !important;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+  font-size: 16px;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.dropdown-content.show {
+  display: block !important; 
+  z-index: 999999 !important;
+  position: absolute;
+  pointer-events: auto;
+}
+
+body.play-mode .dropdown-content.show {
+  display: block !important;
+}
+
+/* dark mode styles */
+
+
+
+html.dark-mode {
+  background-color: #121212;
+  background-image: url(img/gradient-bg.avif);
+}
+  
+body.dark-mode {
+  background-color: #121212;
+  background-image: url(img/gradient-bg.avif);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+body.dark-mode .black-bar {
+  background-color: #333;
+}
+
+body.dark-mode header {
+  background-color: rgba(142, 135, 148, 0.306);
+}
+
+body.dark-mode .login-signup a {
+  background-color: #333;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+body.dark-mode .login-signup a:hover {
+  background-color: rgb(93, 20, 229);
+}
+
+body.dark-mode .learn-play-bar .L, 
+body.dark-mode .learn-play-bar .P {
+  background-color: #333;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+body.dark-mode .learn-play-bar .L:hover {
+  background-color: rgba(198, 10, 97, 0.7);
+}
+
+body.dark-mode .learn-play-bar .P:hover {
+  background-color: rgba(5, 5, 197, 0.7);
+}
+
+body.dark-mode .game-icon a {
+  color: #e0e0e0;
+}
+
+body.dark-mode .game-icon:hover {
+  background-color: rgba(50, 50, 50, 0.7);
+}
+
+body.dark-mode .game-icon.learn-style {
+  background-color: rgba(231, 8, 82, 0.4);
+}
+
+body.dark-mode .game-icon.play-style {
+  background-color: rgba(0, 0, 120, 0.2);
+}
+
+body.dark-mode .game-icon.learn-style:hover {
+  background-color: #f70395;
+}
+
+body.dark-mode .game-icon.play-style:hover {
+  background-color: rgba(0, 0, 150, 0.4);
+}
+
+body.dark-mode .toggle-text {
+  color: #e0e0e0;
+}
+
+body.dark-mode .dark-mode-toggle {
+  background-color: rgba(30, 30, 30, 0.8);
+}
+
+body.dark-mode .dropdown-content {
+  background-color: #333;
+}
+
+body.dark-mode .dropdown-content a {
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode .dropdown-content a:hover {
+  background-color: #444;
+}
+
+@media only screen and (max-width: 767px) {
+  .home img {
+    height: 120px;
+  }
+
+  .home {
+    left: 0;
+    top: 0;
+  }
+
+  .login-signup a {
+    width: 90px;
+    padding: 0.1rem;
+    text-align: center;
+    font-size: small;
+  }
+
+  .app-downloads img {
+    width: 90px;
+    height: auto;
+  }
+
+  .dark-mode-toggle {
+    padding: 5px 10px;
+    bottom: 10px;
+  }
+  
+  .toggle-text {
+    font-size: 12px;
+  }
+
+  .dropdown-content {
+    min-width: 140px;
+  }
+  
+  .dropdown-content a {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+}

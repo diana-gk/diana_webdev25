@@ -1,0 +1,313 @@
+@import url('https://fonts.googleapis.com/css2?family=Linden+Hill:ital@0;1&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background-image: url(../../img/greenbg.png);
+}
+
+body {
+    font-family: "Linden Hill", serif;
+    background-color: #000000;
+    color: #010101;
+    display: flex;
+}
+
+.sidebar {
+    width: 275px;
+    height: 100%;
+    background-color: #f2f2f2;
+    color: #333;
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+    z-index: 100;
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+.sidebar.hidden {
+    transform: translateX(-275px);
+}
+
+.menu-toggle {
+    position: fixed;
+    left: 20px;
+    top: 20px;
+    z-index: 110;
+    background-color: #0c0e0d;
+    color: white;
+    border: solid 2px white;
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+}
+
+.menu-item {
+    padding: 15px 25px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    transition: background-color 0.2s;
+}
+
+.menu-item:hover {
+    background-color: #e0e0e0;
+}
+
+.menu-item img {
+    margin-right: 15px;
+    font-size: 20px;
+    width: 24px;
+    text-align: center;
+    color: #000000;
+}
+
+.menu-divider {
+    height: 1px;
+    background-color: #ccc;
+    margin: 10px 0;
+}
+
+
+/* Game Area */
+
+
+
+.game-area {
+    flex: 1;
+    height: 100%;
+    transition: margin-left 0.3s ease;
+    margin-left: 275px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.game-area.full {
+    margin-left: 0;
+}
+
+.game-table {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+}
+
+/*  */
+
+
+  .arena {
+    position: relative;      
+    display: flex;   
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    background-color: rgba(0, 0, 0, 0.3);
+    width: 500px;
+    margin: 250px auto 0;
+  }
+  .stockpile {
+    display: flex;
+    position: absolute;
+    right: 30px; 
+    margin: 275px auto 0;
+    align-items: center;
+}
+
+.stockpile-card {
+    width: 80px;
+    height: 120px;
+    background-color: #1c3b6a; 
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 2;
+    border: #d0d0d0 2px solid;
+}
+
+.kozer {
+    width: 80px;
+    height: 120px;
+    background-color: white;
+    border-radius: 5px;
+    margin-left: -40px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 1;
+    transform: rotate(90deg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ccc;
+    color: black;
+}
+
+.kozer-card {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    transform: rotate(-90deg); 
+}
+
+.kozer-card .card-value,
+.kozer-card .card-suit {
+    position: relative;
+    margin-left: 5px;
+    font-size: 18px;
+}
+
+.kozer-card .card-value {
+    font-weight: bold;
+}
+
+.kozer-card .card-value.red,
+.kozer-card .card-suit.red {
+    color: red;
+}
+
+.stockpile-div {
+    z-index: 3;
+    color: white;
+    margin-left: 10px;
+    font-size: 16px;
+    margin-right: -65px;
+}
+.player-name {
+    font-size: 18px;
+    color: #ccc;
+}
+
+
+.hand-container {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    margin-top: 50px;
+}
+
+.card {
+    width: 80px;
+    height: 120px;
+    background-color: white;
+    border-radius: 5px;
+    margin-left: -30px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    position: relative;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-20px);
+    z-index: 2;
+}
+
+.card:first-child {
+    margin-left: 0;
+}
+
+.card-value {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.card-value.red {
+    color: red;
+}
+
+.card-suit {
+    position: absolute;
+    top: 25px;
+    left: 5px;
+    font-size: 18px;
+}
+
+.card-suit.red {
+    color: red;
+}
+
+.opponent-area {
+    position: absolute;
+    top: 20px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.opponent {
+    margin: 0 20px;
+    text-align: center;
+}
+
+.opponent-cards {
+    display: flex;
+}
+
+.opponent-card-back {
+    width: 30px;
+    height: 45px;
+    background-color: #1c3b6a;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-left: -15px;
+}
+
+/* Social links */
+.social-links {
+    padding: 15px 25px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.social-links a {
+    color: #333;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    transition: background-color 0.2s;
+}
+
+.social-links a:hover {
+    background-color: #d0d0d0;
+}
+
+.social-links img {
+    width: 24px;
+    height: 24px;
+}
+
+.follow-text {
+    padding: 10px 25px;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+}

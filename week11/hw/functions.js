@@ -102,6 +102,9 @@ function updatePlayerHand(hand) {
     };
 }
 
+//currently generates a bunch of empty card backs
+//but will be updated to be more functional later
+
 function updateOpponentCards(playerName, cardCount) {
     const opponents = document.querySelectorAll('.opponent');
     let opponentDiv = null;
