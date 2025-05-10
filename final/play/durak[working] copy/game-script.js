@@ -26,11 +26,13 @@ document.addEventListener('DOMContentLoaded', function() {
     chatMessages = document.getElementById('chatMessages');
     
 
+// Toggle chat panel visibility
     chatToggle.addEventListener('click', function() {
         chatPanel.classList.toggle('hidden');
         gameArea.classList.toggle('chat-open');
     });
 
+    // Close chat panel when X is clicked
     closeChat.addEventListener('click', function() {
         chatPanel.classList.add('hidden');
         gameArea.classList.remove('chat-open');
@@ -41,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
         gameArea.classList.toggle('full');
     });
     
+    // check if this is the first load by checking for a flag in localStorage
     const isFirstLoad = !localStorage.getItem('durakGameInitialized');
     
     // initialize or load saved game
@@ -66,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         if (gameState.playerHands && gameState.playerHands[0]) {
+            // Ensure player1Hand is always a direct reference to playerHands[0]
             gameState.playerHands[0] = sortPlayerHand(gameState.playerHands[0], gameState.kozer.suit);
             gameState.player1Hand = gameState.playerHands[0];
         }
@@ -119,6 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log("Setting up opponents display on load");
         const opponentContainer = document.querySelector('.opponent-area');
         
+        // Clear opponent area to ensure clean start
         if (opponentContainer) {
             opponentContainer.innerHTML = '';
             
@@ -132,6 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 opponentContainer.appendChild(opponentDiv);
             }
             
+            // Explicitly update all opponent displays after creating them
             updateOpponentDisplays(gameState);
         }
     }
@@ -151,8 +157,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+        // Send message when button is clicked
     sendButton.addEventListener('click', sendMessage);
 
+    // Send message when Enter key is pressed
     chatInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             sendMessage();
@@ -166,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Store the original click handler
         const originalClickHandler = defendBtn.onclick;
         
-        // Replace with  enhanced version
+        // Replace with our enhanced version
         defendBtn.onclick = function() {
             // Call the original handler
             const result = originalClickHandler.call(this);
@@ -198,15 +206,19 @@ setTimeout(initializeStuckGameDetection, 3000);
 function sendMessage() {
     const messageText = chatInput.value.trim();
     if (messageText) {
+        // Create player message
         const messageDiv = document.createElement('div');
         messageDiv.className = 'chat-message player-message';
         messageDiv.textContent = messageText;
         chatMessages.appendChild(messageDiv);
         
+        // Clear input
         chatInput.value = '';
         
+        // Auto-scroll to bottom
         chatMessages.scrollTop = chatMessages.scrollHeight;
         
+        // Simulate bot response after a short delay
         setTimeout(() => {
             generateBotResponse(messageText);
         }, 1000 + Math.random() * 1000);
@@ -214,12 +226,14 @@ function sendMessage() {
 }
 
 
+// Generate bot response based on game state
 function generateBotResponse(playerMessage) {
     let botName = '';
     let responseText = '';
     
     // Determine which bot will respond
     if (gameState && gameState.settings && gameState.settings.numPlayers > 1) {
+        // Pick a random bot from the active players
         const activeBots = [];
         for (let i = 1; i < gameState.settings.numPlayers; i++) {
             if (!gameState.eliminated[i]) {
@@ -231,6 +245,7 @@ function generateBotResponse(playerMessage) {
             const botIndex = activeBots[Math.floor(Math.random() * activeBots.length)];
             botName = gameState.settings.playerNames[botIndex];
             
+            // Generate response based on game state and player message
             const lowerMessage = playerMessage.toLowerCase();
             
             if (lowerMessage.includes('hello') || lowerMessage.includes('hi')) {
@@ -244,6 +259,7 @@ function generateBotResponse(playerMessage) {
             } else if (lowerMessage.includes('your turn') || lowerMessage.includes('go')) {
                 responseText = "I'm thinking about my next move...";
             } else {
+                // Random generic responses
                 const genericResponses = [
                     "Let me think about that...",
                     "Interesting play!",
@@ -260,6 +276,7 @@ function generateBotResponse(playerMessage) {
     }
     
     if (responseText) {
+        // Create bot message
         const messageDiv = document.createElement('div');
         messageDiv.className = 'chat-message opponent-message';
         
@@ -276,6 +293,7 @@ function generateBotResponse(playerMessage) {
         
         chatMessages.appendChild(messageDiv);
         
+        // Auto-scroll to bottom
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 }
@@ -284,7 +302,7 @@ function showSettingsModal(isNewGame = false) {
     const modal = document.getElementById('settingsModal');
     
     document.getElementById('perevodnoyMode').checked = gameSettings.perevodnoyMode;
-    document.getElementById('podkidnoyMode').checked = gameSettings.podkidnoyMode; 
+    document.getElementById('podkidnoyMode').checked = gameSettings.podkidnoyMode; // Add this line
     document.getElementById('botDifficulty').value = gameSettings.botDifficulty;
     document.getElementById('numPlayers').value = gameSettings.numPlayers.toString();
     
@@ -307,7 +325,7 @@ function showSettingsModal(isNewGame = false) {
 
             gameSettings.perevodnoyMode = document.getElementById('perevodnoyMode').checked;
             gameSettings.botDifficulty = document.getElementById('botDifficulty').value;
-            gameSettings.podkidnoyMode = document.getElementById('podkidnoyMode').checked; 
+            gameSettings.podkidnoyMode = document.getElementById('podkidnoyMode').checked; // Add this line
             gameSettings.numPlayers = parseInt(document.getElementById('numPlayers').value);
             
             gameSettings.playerNames = ['Player 1'];
@@ -401,6 +419,7 @@ function initializeGame() {
     const values = ['6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
     const deck = [];
     
+    // Create the deck with each card only appearing once
     for (let i = 0; i < suits.length; i++) {
         for (let j = 0; j < values.length; j++) {
             deck.push({
@@ -411,18 +430,22 @@ function initializeGame() {
         }
     }
     
+    // Validate the deck to ensure no duplicates before shuffling
     validateDeck(deck);
     
+    // Shuffle the deck
     shuffle(deck);
     
     const numPlayers = gameSettings.numPlayers || 3;
     
+    // Deal cards to players
     const playerHands = [];
     for (let i = 0; i < numPlayers; i++) {
         playerHands.push(deck.splice(0, 6));
     }
     
-    
+    // Important: Take the kozer from the deck
+    // Using splice returns the card AND removes it from the deck
     const kozer = deck.splice(0, 1)[0];
     
     if (kozer) {
@@ -468,8 +491,10 @@ function initializeGame() {
         opponentContainer.appendChild(opponentDiv);
     }
     
+    // Display stockpile with kozer shown correctly
     displayStockpile(deck, kozer);
     
+    // Create game state with proper circular rotation
     const gameState = {
         deck: deck,
         kozer: kozer,
@@ -557,17 +582,21 @@ function drawCardsForPlayer(gameState, playerIndex) {
     let maxAttempts = gameState.deck.length * 2; // Prevent infinite loops
     let attempts = 0;
     
+    // Draw until 6 cards or deck is empty
     while (playerHand.length < 6 && attempts < maxAttempts) {
         attempts++;
         
+        // Check if deck is completely empty
         if (gameState.deck.length === 0 && gameState.kozerTaken) {
             console.log(`No more cards available for ${playerName}`);
             break;
         }
         
+        // Draw from deck if available
         if (gameState.deck.length > 0) {
             const drawnCard = gameState.deck.pop();
             
+            // Check for duplicate
             const isDuplicate = checkForDuplicateCard(drawnCard, gameState);
             if (isDuplicate) {
                 console.log(`DUPLICATE DETECTED: ${drawnCard.value}${drawnCard.suit} - skipping`);
@@ -583,6 +612,7 @@ function drawCardsForPlayer(gameState, playerIndex) {
         } 
         // Take kozer if deck empty but kozer available
         else if (!gameState.kozerTaken && gameState.kozer) {
+            // Check for duplicate kozer
             const isDuplicate = checkForDuplicateCard(gameState.kozer, gameState);
             if (isDuplicate) {
                 console.log(`DUPLICATE KOZER DETECTED: ${gameState.kozer.value}${gameState.kozer.suit} - marking as taken`);
@@ -609,7 +639,7 @@ function drawCardsForPlayer(gameState, playerIndex) {
     // If this is the human player, sort their hand
     if (playerIndex === 0 && cardsDrawn > 0) {
         gameState.playerHands[0] = sortPlayerHand(playerHand, gameState.kozer ? gameState.kozer.suit : null);
-        gameState.player1Hand = gameState.playerHands[0]; 
+        gameState.player1Hand = gameState.playerHands[0]; // Keep references in sync
     }
     
     updatePlayerHand(gameState.player1Hand);
@@ -638,6 +668,7 @@ function checkForEmptyHandEliminations(gameState) {
             console.log(`Player ${gameSettings.playerNames[i]} eliminated with empty hand`);
             eliminationsOccurred = true;
             
+            // Add system message to chat
             const messageDiv = document.createElement('div');
             messageDiv.className = 'system-message';
             messageDiv.textContent = `${gameSettings.playerNames[i]} has left the game.`;
@@ -646,6 +677,7 @@ function checkForEmptyHandEliminations(gameState) {
         }
     }
     
+    // If eliminations occurred, check if game is over
     if (eliminationsOccurred) {
         checkGameOver(gameState);
     }
@@ -654,13 +686,20 @@ function checkForEmptyHandEliminations(gameState) {
 }
 
 
+
+/**
+ * Draw up to 6 cards for each active player in proper order,
+ * taking from deck first, then kozer, then handling eliminations.
+ */
 function drawUpToSix(gameState) {
     console.log("=== DRAWING CARDS UP TO SIX EACH ===");
   
+    // ensure elimination array exists
     if (!gameState.eliminated) {
       gameState.eliminated = new Array(gameSettings.numPlayers).fill(false);
     }
   
+    // count active players
     const activePlayers = gameState.eliminated.filter(e => !e).length;
     if (activePlayers <= 1) {
       console.log("Only one (or zero) active players – skipping draw.");
@@ -834,8 +873,6 @@ function setupArena() {
     document.getElementById('skipPileOnBtn').addEventListener('click', handleSkipPileOn);
 }
 
-
-//just in case
 function addPileOnButtons() {
     const actionButtons = document.getElementById('actionButtons');
     
@@ -846,6 +883,7 @@ function addPileOnButtons() {
         
         // Only add if buttons don't already exist
         if (!existingPileOnBtn) {
+            // Add pile-on button
             const pileOnBtn = document.createElement('button');
             pileOnBtn.id = 'pileOnBtn';
             pileOnBtn.className = 'game-btn';
@@ -853,10 +891,12 @@ function addPileOnButtons() {
             pileOnBtn.style.display = 'none';
             actionButtons.appendChild(pileOnBtn);
             
+            // Add event listener
             pileOnBtn.addEventListener('click', handlePileOn);
         }
         
         if (!existingSkipPileOnBtn) {
+            // Add skip pile-on button
             const skipPileOnBtn = document.createElement('button');
             skipPileOnBtn.id = 'skipPileOnBtn';
             skipPileOnBtn.className = 'game-btn';
@@ -864,6 +904,7 @@ function addPileOnButtons() {
             skipPileOnBtn.style.display = 'none';
             actionButtons.appendChild(skipPileOnBtn);
             
+            // Add event listener
             skipPileOnBtn.addEventListener('click', handleSkipPileOn);
         }
     }
@@ -892,7 +933,7 @@ function handlePileOn() {
         ...gameState.currentRound.defenseCards.map(c => c.value)
     ])];
     
-    // Check if the defender has enough cards
+    // IMPROVED VALIDATION: Check if the defender has enough cards
     const defenderHandSize = gameState.playerHands[gameState.defender].length;
     const undefendedAttacks = gameState.currentRound.attackCards.length - 
                              gameState.currentRound.defenseCards.length;
@@ -910,12 +951,14 @@ function handlePileOn() {
         const cardIndex = Array.from(allPlayerCards).indexOf(selectedCards[i]);
         const card = gameState.player1Hand[cardIndex];
         
+        // Validate that we found a valid card
         if (!card) {
             console.error("Card not found at index", cardIndex);
             alert("Error with selected card. Please try again.");
             return;
         }
         
+        // Check if card has valid rank
         if (!validRanks.includes(card.value)) {
             alert('You can only pile on with cards that match ranks already in play');
             return;
@@ -927,22 +970,29 @@ function handlePileOn() {
     // Sort in reverse order to avoid index shifting when removing cards
     selectedCardDetails.sort((a, b) => b.index - a.index);
     
+    // Process each card
     for (const item of selectedCardDetails) {
+        // Add to attack cards
         gameState.currentRound.attackCards.push(item.card);
+        
+        // Remove from player's hand
         gameState.player1Hand.splice(item.index, 1);
     }
     
+    // Keep playerHands[0] and player1Hand in sync
     gameState.playerHands[0] = gameState.player1Hand;
     gameState.player1Hand = sortPlayerHand(gameState.player1Hand, gameState.kozer.suit);
     gameState.playerHands[0] = gameState.player1Hand;
     
+    // Update UI
     updatePlayerHand(gameState.player1Hand);
     updateCardArea(gameState);
     updateOpponentDisplays(gameState);
     
+    // Clear the pile-on status for this player
     gameState.pileOnAttacker = null;
     
-    // FDon't move to the next pile-on attacker automatically
+    // FIX: Don't move to the next pile-on attacker automatically
     // Instead, let the defender respond to these new attacks first
     if (gameState.defender !== 0) {
         // If defender is bot, trigger bot defense
@@ -952,6 +1002,7 @@ function handlePileOn() {
         updateGameStatus(gameState);
     }
     
+    // Save state
     localStorage.setItem('durakGameState', JSON.stringify(gameState));
 }
 
@@ -959,42 +1010,54 @@ function handlePileOn() {
 function handleSkipPileOn() {
     console.log("Skip pile-on button clicked");
     
+    // Set skip flag to prevent recursive pile-on checks
     gameState.skipNextPileOnCheck = true;
     
+    // Clear the pile-on status for this player
     gameState.pileOnAttacker = null;
     
+    // Process the end of successful defense immediately
     processEndOfSuccessfulDefense(gameState);
     
     
+    // Update game status
     updateGameStatus(gameState);
     
+    // Update all UI elements
     updateButtonStates(gameState);
     updateCardArea(gameState);
     updatePlayerHand(gameState.player1Hand);
     updateOpponentDisplays(gameState);
     
+    // Save state
     localStorage.setItem('durakGameState', JSON.stringify(gameState));
 }
 
 
+// Improved processEndOfSuccessfulDefense function to fix freezes
 function processEndOfSuccessfulDefense(gameState) {
     console.log("=== PROCESSING END OF SUCCESSFUL DEFENSE ===");
     
+    // 1. Clear the pile-on state first to prevent recursion issues
     resetPileOnState(gameState);
     
+    // 2. Move all cards to discard pile
     gameState.discardPile = gameState.discardPile.concat(
         gameState.currentRound.attackCards, 
         gameState.currentRound.defenseCards
     );
     
+    // 3. Clear current round
     gameState.currentRound = {
         attackCards: [],
         defenseCards: []
     };
     
+    // 4. Draw cards for all players in proper order
     console.log("Drawing cards after successful defense");
     drawUpToSix(gameState);
     
+    // 5. Check for game over BEFORE changing player positions
     checkGameOver(gameState);
     
     if (!gameState.gameInProgress) {
@@ -1003,7 +1066,7 @@ function processEndOfSuccessfulDefense(gameState) {
         return; // Exit early if game is over
     }
     
-    // handle player picked up flag - defender skips turn if they took cards
+    // 6. Handle player picked up flag - defender skips turn if they took cards
     if (gameState.playerPickedUp) {
         // If defender took cards earlier, skip their turn and go to next player
         gameState.currentPlayer = getNextActivePlayer(gameState, gameState.currentPlayer);
@@ -1013,9 +1076,10 @@ function processEndOfSuccessfulDefense(gameState) {
         gameState.currentPlayer = gameState.defender;
     }
     
+    // 7. Next defender is player after new attacker
     gameState.defender = getNextActivePlayer(gameState, gameState.currentPlayer);
     
-    // Safety check to prevent self-attack
+    // 8. Safety check to prevent self-attack
     if (gameState.currentPlayer === gameState.defender) {
         console.log("WARNING: Current player same as defender - potential game logic error");
         if (gameState.eliminated.filter(e => !e).length <= 1) {
@@ -1030,17 +1094,21 @@ function processEndOfSuccessfulDefense(gameState) {
         }
     }
     
+    // 9. Reset for next round
     gameState.firstCard = true;
     gameState.skipNextPileOnCheck = false;
 
+    // 10. Update UI
     updateCardArea(gameState);
     updatePlayerHand(gameState.player1Hand);
     updateOpponentDisplays(gameState);
     updateGameStatus(gameState);
     updateButtonStates(gameState);
 
+    // 11. Save state
     localStorage.setItem('durakGameState', JSON.stringify(gameState));
     
+    // 12. Trigger bot play if needed with timeout
     if (gameState.currentPlayer !== 0 && gameState.gameInProgress) {
         console.log(`Scheduling bot ${gameState.currentPlayer} to play after successful defense`);
         setTimeout(() => botPlay(gameState), 2000);
@@ -1056,6 +1124,7 @@ function updateGameStatus(gameState, isPileOn = false) {
     let statusText = '';
     
     if (!gameState.gameInProgress) {
+        // Game is over - display game over status
         const activePlayers = gameState.eliminated.filter(eliminated => !eliminated).length;
         
         if (activePlayers === 0) {
@@ -1073,6 +1142,8 @@ function updateGameStatus(gameState, isPileOn = false) {
             statusText = "Game Over";
         }
     } else if (isPileOn || gameState.pileOnAttacker !== null) {
+        // FIX: Use the correct names for pile-on status
+        // Pile-on is in progress - make sure to use correct player indices
         if (gameState.pileOnAttacker === 0) {
             // Human is piling on
             const defenderName = gameSettings.playerNames[gameState.defender];
@@ -1107,8 +1178,10 @@ function updateGameStatus(gameState, isPileOn = false) {
 
 
  function getNextActivePlayer(gameState, currentPosition) {
+    // Check for any new eliminations that might have occurred
     checkAndUpdateElimination(gameState);
     
+    // Count active players
     let activePlayers = 0;
     for (let i = 0; i < gameSettings.numPlayers; i++) {
         if (!gameState.eliminated[i]) {
@@ -1116,6 +1189,7 @@ function updateGameStatus(gameState, isPileOn = false) {
         }
     }
     
+    // If only one player is active, game should be over
     if (activePlayers <= 1) {
         gameState.gameInProgress = false;
         updateGameStatus(gameState);
@@ -1123,6 +1197,7 @@ function updateGameStatus(gameState, isPileOn = false) {
         return currentPosition;
     }
     
+    // Use a circular rotation to find next non-eliminated player
     let nextPlayer = (currentPosition + 1) % gameSettings.numPlayers;
     
     // Keep rotating until we find a non-eliminated player
@@ -1157,13 +1232,13 @@ function updateButtonStates(gameState) {
         return;
     }
 
-    // Hide everything by default
+    // 1) Hide everything by default
     [attackBtn, finishAttackBtn, defendBtn, takeCardsBtn, passBtn,
      pileOnBtn, skipPileOnBtn].forEach(btn => btn.style.display = 'none');
 
     if (!gameState || !gameState.gameInProgress) return;
 
-    // If we're in a pile-on cycle, show only those buttons to the human
+    // 2) If we're in a pile-on cycle, show only those buttons to the human
     if (gameState.pileOnAttacker !== null) {
         const humanTurnToPile = gameState.pileOnAttacker === 0 && !gameState.eliminated[0];
         if (humanTurnToPile) {
@@ -1178,7 +1253,7 @@ function updateButtonStates(gameState) {
         return;  // skip the normal-attack/defend logic
     }
 
-    // Normal attack/defend flow
+    // 3) Normal attack/defend flow
     if (gameState.currentPlayer === 0) {
         attackBtn.style.display = 'inline-block';
         finishAttackBtn.style.display = 'inline-block';
@@ -1196,7 +1271,7 @@ function updateButtonStates(gameState) {
 
 
 function canPass(gameState) {
-    //check if player has already played a defense card this round
+    // First, check if player has already played a defense card this round
     if (gameState.currentRound.defenseCards.length > 0) return false;
     
     // Get the most recent attack card
@@ -1231,17 +1306,21 @@ function initializeGameControls(gameState) {
             return;
         }
         
+        // Count how many undefended attacks are currently in play
         const undefendedAttacks = gameState.currentRound.attackCards.length - 
                                 gameState.currentRound.defenseCards.length;
         
+        // Get defender's hand size
         const defenderHandSize = gameState.playerHands[gameState.defender].length;
         
+        // Check if adding the selected cards would exceed defender's hand size
         if (undefendedAttacks + selectedCards.length > defenderHandSize) {
             alert(`You cannot play ${selectedCards.length} cards. The defender only has ${defenderHandSize} cards remaining and already needs to defend against ${undefendedAttacks} cards.`);
             return;
         }
         
-      
+        // Rest of the original attack button code...
+        // Collect all selected cards with proper indexes
         const allPlayerCards = document.querySelectorAll('.card');
         let selectedCardDetails = [];
         
@@ -1295,24 +1374,32 @@ function initializeGameControls(gameState) {
         
         // Process each card
         for (const item of selectedCardDetails) {
+            // Add to attack cards
             gameState.currentRound.attackCards.push(item.card);
             
+            // Remove from player's hand
             gameState.player1Hand.splice(item.index, 1);
         }
         
+        // Update game state
         if (gameState.firstCard) {
             gameState.firstCard = false;
         }
 
+        // Keep playerHands[0] and player1Hand in sync - important!
         gameState.playerHands[0] = gameState.player1Hand;
         gameState.player1Hand = sortPlayerHand(gameState.player1Hand, gameState.kozer.suit);
         gameState.playerHands[0] = gameState.player1Hand;
         
+        // Update UI
         updatePlayerHand(gameState.player1Hand);
         updateCardArea(gameState);
-        updateOpponentDisplays(gameState); 
+        updateOpponentDisplays(gameState); // Add this line to ensure opponent displays are updated
+        
+        // Save state
         localStorage.setItem('durakGameState', JSON.stringify(gameState));
         
+        // If defender is a bot, trigger bot defense
         if (gameState.defender !== 0) {
             setTimeout(() => botDefend(gameState), 3000);
         }
@@ -1329,54 +1416,70 @@ function initializeGameControls(gameState) {
         
         // Process attack end
         if (gameState.currentRound.attackCards.length === gameState.currentRound.defenseCards.length) {
+            // All cards defended - move to discard pile
             gameState.discardPile = gameState.discardPile.concat(
                 gameState.currentRound.attackCards, 
                 gameState.currentRound.defenseCards
             );
             
+            // Defender becomes attacker
             gameState.currentPlayer = gameState.defender;
         } else {
+            // Defender takes all cards
             const defenderHand = gameState.playerHands[gameState.defender];
             defenderHand.push(...gameState.currentRound.attackCards, ...gameState.currentRound.defenseCards);
             
+            // Next player after defender becomes attacker
             gameState.currentPlayer = getNextActivePlayer(gameState, gameState.defender);
         }
         
+        // Clear the round
         gameState.currentRound = {
             attackCards: [],
             defenseCards: []
         };
         
+        // Next defender is player after the new attacker
         gameState.defender = getNextActivePlayer(gameState, gameState.currentPlayer);
         
+        // CRITICAL: Call the guaranteed draw function
         console.log("Drawing cards after player finishes attack");
         drawUpToSix(gameState);
         drawCardsForPlayer(gameState, 0);
         
+        // Reset for next round
         gameState.firstCard = true;
         
+        // Make sure player1Hand is always a reference to playerHands[0]
         gameState.player1Hand = gameState.playerHands[0];
         
+        // Update UI
         updateCardArea(gameState);
         updatePlayerHand(gameState.player1Hand);
         updateOpponentDisplays(gameState);
         
+        // Check for game over
         checkGameOver(gameState);
         
+        // If next player is bot and game is still active, trigger bot play
         if (gameState.currentPlayer !== 0 && gameState.gameInProgress) {
             setTimeout(() => botPlay(gameState), 2000);
         }
         
+        // Save game state
         localStorage.setItem('durakGameState', JSON.stringify(gameState));
     });
     
 
         //defend btn
+        // Update the event listener for the defend button
     document.getElementById('defendBtn')?.addEventListener('click', function() {
         const selectedCards = document.querySelectorAll('.card.selected');
         
+        // Count how many undefended attack cards there are
         const undefendedAttackCount = gameState.currentRound.attackCards.length - gameState.currentRound.defenseCards.length;
         
+        // If there are multiple undefended attack cards, require selecting that many cards
         if (undefendedAttackCount > 1) {
             if (selectedCards.length !== undefendedAttackCount) {
                 alert(`Please select exactly ${undefendedAttackCount} cards to defend with (one for each attack)`);
@@ -1437,19 +1540,21 @@ function initializeGameControls(gameState) {
             for (let i = 0; i < undefendedAttackCount; i++) {
                 const defenseCard = selectedCardDetails[i].card;
                 
+                // Add to defense cards in order
                 gameState.currentRound.defenseCards.push(defenseCard);
                 
+                // Remove from player's hand
                 gameState.player1Hand.splice(selectedCardDetails[i].index, 1);
             }
             
+            // Keep playerHands[0] and player1Hand in sync
             gameState.playerHands[0] = gameState.player1Hand;
             gameState.player1Hand = sortPlayerHand(gameState.player1Hand, gameState.kozer.suit);
             gameState.playerHands[0] = gameState.player1Hand;
             
             updatePlayerHand(gameState.player1Hand);
             updateCardArea(gameState);
-            updateOpponentDisplays(gameState); 
-
+            updateOpponentDisplays(gameState); // Add this line to update opponent displays
             
             // Check if all attacks are defended
             if (gameState.currentRound.defenseCards.length === gameState.currentRound.attackCards.length) {
@@ -1466,7 +1571,7 @@ function initializeGameControls(gameState) {
             return;
         }
         
-        // og code for handling a single defense
+        // Original code for handling a single defense
         if (selectedCards.length !== 1) {
             alert('Please select exactly one card to defend with');
             return;
@@ -1488,14 +1593,15 @@ function initializeGameControls(gameState) {
         
         gameState.player1Hand.splice(cardIndex, 1);
 
+        // Ensure playerHands[0] and player1Hand stay in sync
         gameState.playerHands[0] = gameState.player1Hand;
         gameState.player1Hand = sortPlayerHand(gameState.player1Hand, gameState.kozer.suit);
         gameState.playerHands[0] = gameState.player1Hand;
         
         updatePlayerHand(gameState.player1Hand);
         updateCardArea(gameState);
-        updateOpponentDisplays(gameState); 
-
+        updateOpponentDisplays(gameState); // Add this line to update opponent displays
+        
         // if all attacks are defended, update the game state
         if (gameState.currentRound.defenseCards.length === gameState.currentRound.attackCards.length) {
             // if maximum attacks reached (6) or attacker has no more valid cards
@@ -1517,6 +1623,7 @@ function initializeGameControls(gameState) {
         
         const defenderHand = gameState.playerHands[gameState.defender];
         
+        // Add all cards to defender's hand
         defenderHand.push(...gameState.currentRound.attackCards, ...gameState.currentRound.defenseCards);
         
         // Clear current round
@@ -1531,13 +1638,17 @@ function initializeGameControls(gameState) {
         // Next defender is player after new attacker
         gameState.defender = getNextActivePlayer(gameState, gameState.currentPlayer);
         
+        // FIX: Always reset pile-on state when cards are taken
         resetPileOnState(gameState);
         
+        // CRITICAL: Call the guaranteed draw function
         console.log("Drawing cards after player takes cards");
         drawUpToSix(gameState);
         
+        // Reset for next round
         gameState.firstCard = true;
         
+        // If defender was player 1, need to sort hand and sync references
         if (gameState.defender === 0) {
             gameState.player1Hand = gameState.playerHands[0];
         }
@@ -1545,17 +1656,21 @@ function initializeGameControls(gameState) {
         gameState.playerHands[0] = sortPlayerHand(gameState.playerHands[0], gameState.kozer.suit);
         gameState.player1Hand = gameState.playerHands[0];
         
+        // Update UI
         updateCardArea(gameState);
         updatePlayerHand(gameState.player1Hand);
         updateOpponentDisplays(gameState);
         updateGameStatus(gameState);
         
+        // Check for game over
         checkGameOver(gameState);
         
+        // If next player is bot and game is active, schedule bot play
         if (gameState.currentPlayer !== 0 && gameState.gameInProgress) {
             setTimeout(() => botPlay(gameState), 2000);
         }
         
+        // Save game state
         localStorage.setItem('durakGameState', JSON.stringify(gameState));
     });
     
@@ -1571,6 +1686,7 @@ function initializeGameControls(gameState) {
         
         // Safety check: ensure we're not overloading the next defender
         if (wouldPassOverloadNextDefender(gameState, selectedCards.length)) {
+            // Find the next defender's name
             const nextDefender = getNextActivePlayer(gameState, gameState.defender);
             const nextDefenderName = gameSettings.playerNames[nextDefender];
             
@@ -1578,9 +1694,11 @@ function initializeGameControls(gameState) {
             return;
         }
         
+        // Get the most recent attack card's value
         const attackCard = gameState.currentRound.attackCards[gameState.currentRound.attackCards.length - 1];
         const requiredValue = attackCard.value;
         
+        // Collect all selected cards with proper indexes
         const allPlayerCards = document.querySelectorAll('.card');
         let selectedCardDetails = [];
         
@@ -1611,13 +1729,17 @@ function initializeGameControls(gameState) {
         
         // Process each card
         for (const item of selectedCardDetails) {
+            // Add to attack cards
             gameState.currentRound.attackCards.push(item.card);
             
+            // Remove from player's hand
             gameState.player1Hand.splice(item.index, 1);
         }
         
+        // Update playerHands[0] to match player1Hand
         gameState.playerHands[0] = gameState.player1Hand;
         
+        // Store the current defender before changing it
         const oldDefender = gameState.defender;
         
         // new defender is the next player in circular order
@@ -1629,7 +1751,10 @@ function initializeGameControls(gameState) {
         // Set firstCard to false since this is not the first attack anymore
         gameState.firstCard = false;
         
-       
+        // Do NOT set attackComplete to true here, since the round is not over
+        // The round continues with a new defender
+        
+        // Sort player's hand
         gameState.player1Hand = sortPlayerHand(gameState.player1Hand, gameState.kozer.suit);
         gameState.playerHands[0] = gameState.player1Hand;
     
@@ -1744,9 +1869,11 @@ function updatePlayerHand(hand) {
         const cardDiv = document.createElement('div');
         cardDiv.className = 'card';
         
+        // Add trump card styling
         if (gameState && gameState.kozer && card.suit === gameState.kozer.suit) {
             cardDiv.classList.add('trump');
             
+            // Add separator class to first trump card
             if (!lastCardWasTrump) {
                 cardDiv.classList.add('trump-separator');
             }
@@ -1781,6 +1908,7 @@ function updatePlayerHand(hand) {
 }
 
 function updateOpponentDisplays(gameState) {
+    // Make sure we have player hands and settings
     if (!gameState || !gameState.playerHands || !gameSettings) {
         console.error("Cannot update opponents: missing game state data");
         return;
@@ -1809,7 +1937,7 @@ function updateOpponentDisplays(gameState) {
         }
     }
     
-    //  update each opponent's cards
+    // Now update each opponent's cards
     const opponents = opponentArea.querySelectorAll('.opponent');
     for (let i = 0; i < opponents.length; i++) {
         const playerIndex = i + 1; // opponent indices start at 1
@@ -1857,7 +1985,7 @@ function displayStockpile(deck, kozer, kozerTaken) {
         
         if (deck.length === 0) {
             // When deck is empty AND kozer is taken, show trump suit icon
-            stockpileCard.style.display = 'block';  
+            stockpileCard.style.display = 'block';  // Keep the card container visible
             
             // Create suit icon
             const suitIcon = document.createElement('div');
@@ -1912,11 +2040,13 @@ function displayStockpile(deck, kozer, kozerTaken) {
     }
 }
 
+// Fix botPlay function to avoid duplicate updates
 function botPass(gameState, passCard) {
     console.log("=== BOT PASSING ===");
     console.log("Current player (attacker):", gameState.currentPlayer);
     console.log("Current defender:", gameState.defender);
     
+    // Find all cards with the same value
     const defenderHand = gameState.playerHands[gameState.defender];
     const sameValueCards = defenderHand.filter(card => card.value === passCard.value);
     
@@ -1974,9 +2104,11 @@ function botPass(gameState, passCard) {
         }
     }
     
+    // Update UI
     updateCardArea(gameState);
     updateOpponentDisplays(gameState);
     
+    // Store current defender before changing
     const oldDefender = gameState.defender;
     
     // New defender is next player
@@ -1994,10 +2126,13 @@ function botPass(gameState, passCard) {
         return;
     }
     
+    // Set firstCard to false since not first attack anymore
     gameState.firstCard = false;
     
+    // Update game status
     updateGameStatus(gameState);
     
+    // Check for game over
     if (checkGameOver(gameState)) {
         console.log("Game over detected after pass");
         return;
@@ -2006,6 +2141,7 @@ function botPass(gameState, passCard) {
     console.log("After pass - new attacker:", gameState.currentPlayer);
     console.log("After pass - new defender:", gameState.defender);
 
+    // If new defender is bot, trigger bot defense
     if (gameState.defender !== 0 && gameState.gameInProgress) {
         console.log("New defender is bot - scheduling bot defense");
         setTimeout(() => {
@@ -2014,6 +2150,7 @@ function botPass(gameState, passCard) {
         }, 1500);
     }
     
+    // Save game state
     localStorage.setItem('durakGameState', JSON.stringify(gameState));
 }
 
@@ -2078,7 +2215,7 @@ function botDefend(gameState) {
         updateGameStatus(gameState);
     };
     
-    //  Check if in a stuck pile-on state
+    // FIX for stuck game: Check if in a stuck pile-on state
     if (gameState.pileOnAttacker !== null && gameState.currentRound.attackCards.length === gameState.currentRound.defenseCards.length) {
         console.log("Game appears stuck in pile-on state - forcibly continuing");
         gameState.pileOnAttacker = null;
@@ -2091,8 +2228,10 @@ function botDefend(gameState) {
     const difficulty = gameSettings.botDifficulty;
 
     
+    // Count undefended attack cards
     const undefendedAttackCount = gameState.currentRound.attackCards.length - gameState.currentRound.defenseCards.length;
     
+    // Don't attempt to defend if there are no undefended cards
     if (undefendedAttackCount === 0) {
         console.log("No undefended attack cards - skipping defense");
         // Make sure pile-on phase continues properly
@@ -2159,9 +2298,10 @@ function botDefend(gameState) {
             }
         }
         
+        // Update all displays after all defenses
         updateOpponentDisplays(gameState);
         
-        
+        // CRITICAL FIX: After defending all cards, proper continuation
         // Check if this was a pile-on attack
         if (gameState.pileOnAttacker !== null) {
             console.log("Bot defended against pile-on attack - continuing pile-on phase");
@@ -2215,12 +2355,13 @@ function botDefend(gameState) {
             gameState.currentRound.defenseCards.push(defenseCard);
             defenderHand.splice(cardIndex, 1);
             
+            // Update displays
             updateCardArea(gameState);
             updateOpponentDisplays(gameState);
             
             // Check if all attacks are defended
             if (gameState.currentRound.defenseCards.length === gameState.currentRound.attackCards.length) {
-                // Check if this was a pile-on attack
+                // FIX: Check if this was a pile-on attack
                 if (gameState.pileOnAttacker !== null) {
                     console.log("Bot defended against pile-on attack - continuing pile-on phase");
                     setTimeout(() => endDefense(gameState, true), 1500);
@@ -2246,6 +2387,7 @@ function botDefend(gameState) {
 
     }
     
+    // Save state after any bot action
     localStorage.setItem('durakGameState', JSON.stringify(gameState));
 }
 
@@ -2338,6 +2480,7 @@ function botPileOn(gameState) {
     if (attackCard) {
         console.log(`Bot ${playerIndex} piles on with: ${attackCard.value}${attackCard.suit}`);
         
+        // Play the card
         const cardIndex = attackerHand.findIndex(card => 
             card.suit === attackCard.suit && card.value === attackCard.value);
         
@@ -2349,15 +2492,19 @@ function botPileOn(gameState) {
             return;
         }
         
+        // Play the card
         gameState.currentRound.attackCards.push(attackCard);
         attackerHand.splice(cardIndex, 1);
         
+        // Update UI
         updateCardArea(gameState);
         updateOpponentDisplays(gameState);
         
+        // IMPORTANT: Clear pile-on status for this player explicitly
         const currentPileOnAttacker = gameState.pileOnAttacker;
         gameState.pileOnAttacker = null;
         
+        // Log the current defender to verify it's correct
         console.log(`Current defender is Player ${gameState.defender}`);
         
         // If defender is human, update button states and game status
@@ -2375,8 +2522,10 @@ function botPileOn(gameState) {
     } else {
         console.log(`Bot ${playerIndex} chooses not to pile on`);
         
+        // Clear pile-on status before moving to next
         gameState.pileOnAttacker = null;
         
+        // Use processEndOfSuccessfulDefense to properly terminate the pile-on phase
         setTimeout(() => {
             if (gameState.gameInProgress) {
                 processEndOfSuccessfulDefense(gameState);
@@ -2384,6 +2533,7 @@ function botPileOn(gameState) {
         }, 1000);
     }
     
+    // Save state
     localStorage.setItem('durakGameState', JSON.stringify(gameState));
 }
 
@@ -2399,6 +2549,7 @@ function botPlay(gameState) {
         return;
     }
     
+    // Skip if it's not a bot's turn
     if (gameState.currentPlayer === 0) {
         console.log("Not bot's turn - skipping bot play");
         return;
@@ -2480,6 +2631,7 @@ function botPlay(gameState) {
         gameState.currentRound.attackCards.push(attackCard);
         attackerHand.splice(cardIndex, 1);
         
+        // Update game UI
         updateCardArea(gameState);
         updateOpponentDisplays(gameState);
         
@@ -2497,9 +2649,11 @@ function botPlay(gameState) {
         }
     } else {
         console.log("Bot has no valid attack card - ending attack");
+        // CRITICAL FIX: Always end attack explicitly 
         endBotAttack(gameState);
     }
     
+    // Always save state
     localStorage.setItem('durakGameState', JSON.stringify(gameState));
 }
 
@@ -2507,17 +2661,21 @@ function botPlay(gameState) {
 function botTakeCards(gameState) {
     console.log("=== BOT TAKING CARDS ===");
     
+    // CRITICAL FIX: Set attackComplete to true immediately
     gameState.attackComplete = true;
     
     const defenderHand = gameState.playerHands[gameState.defender];
     
+    // Add all cards to defender's hand
     defenderHand.push(...gameState.currentRound.attackCards, ...gameState.currentRound.defenseCards);
     
+    // Clear current round
     gameState.currentRound = {
         attackCards: [],
         defenseCards: []
     };
 
+    // CRITICAL FIX: Force card drawing
     console.log("Drawing cards after bot takes cards");
     drawUpToSix(gameState);
     drawCardsForPlayer(gameState, 0);
@@ -2537,6 +2695,7 @@ function botTakeCards(gameState) {
         return;
     }
     
+    // Update status text
     const statusDiv = document.getElementById('gameStatus');
     if (statusDiv && gameState.gameInProgress) {
         const defenderName = gameSettings.playerNames[gameState.defender];
@@ -2545,19 +2704,23 @@ function botTakeCards(gameState) {
     
     
 
+    // Reset for next round
     gameState.attackComplete = false;
     gameState.firstCard = true;
     
+    // Update displays
     updateCardArea(gameState);
     updatePlayerHand(gameState.player1Hand);
     updateOpponentDisplays(gameState);
     updateGameStatus(gameState);
     
+    // Check if game is over
     if (checkGameOver(gameState)) {
         console.log("Game over detected after bot takes cards");
         return;
     }
     
+    // If next player is bot and game is still active, schedule bot play
     if (gameState.currentPlayer !== 0 && gameState.gameInProgress) {
         console.log("Scheduling next bot play after taking cards");
         setTimeout(() => {
@@ -2566,6 +2729,7 @@ function botTakeCards(gameState) {
         }, 2000);
     }
     
+    // Save game state
     localStorage.setItem('durakGameState', JSON.stringify(gameState));
 }
 
@@ -2606,34 +2770,42 @@ function endDefense(gameState, successful) {
         const defenderHand = gameState.playerHands[gameState.defender];
         defenderHand.push(...gameState.currentRound.attackCards, ...gameState.currentRound.defenseCards);
         
+        // Clear current round
         gameState.currentRound = {
             attackCards: [],
             defenseCards: []
         };
         
+        // Next attacker is player after defender
         gameState.currentPlayer = getNextActivePlayer(gameState, gameState.defender);
         
+        // Next defender is player after new attacker
         gameState.defender = getNextActivePlayer(gameState, gameState.currentPlayer);
         
+        // Reset pile-on state
         resetPileOnState(gameState);
         
+        // Draw cards
         console.log("Drawing cards after failed defense");
         drawUpToSix(gameState);
         
+        // Reset for next round
         gameState.firstCard = true;
     } 
     else if (gameState.settings.podkidnoyMode && !gameState.skipNextPileOnCheck) {
         console.log("Defense successful with podkidnoy mode - checking for pile-on attackers");
         
+        // Check if all attacks are defended
         const allAttacksDefended = gameState.currentRound.attackCards.length === 
                                   gameState.currentRound.defenseCards.length;
         
+        // If not all attacks are defended, return early - need to finish defense first
         if (!allAttacksDefended) {
             console.log("Not all attacks are defended yet - can't start or continue pile-on");
             return;
         }
         
-        // pile-on phase management
+        // Clean approach to pile-on phase management
         if (gameState.pileOnAttacker === null) {
             // Start a new pile-on phase
             gameState.pileOnStartTime = new Date().getTime();
@@ -2735,26 +2907,31 @@ function endDefense(gameState, successful) {
         processEndOfSuccessfulDefense(gameState);
     }
     
+    // Update UI
     updateCardArea(gameState);
     updatePlayerHand(gameState.player1Hand);
     updateOpponentDisplays(gameState);
     updateGameStatus(gameState);
     
+    // Check for game over
     if (checkGameOver(gameState)) {
         console.log("Game over detected in endDefense");
         return;
     }
     
+    // If next player is bot and game is active, schedule bot play
     if (gameState.currentPlayer !== 0 && gameState.gameInProgress) {
         console.log("Next player is bot - scheduling bot play");
         setTimeout(() => botPlay(gameState), 2000);
     }
     
+    // Save game state
     localStorage.setItem('durakGameState', JSON.stringify(gameState));
 }
 
 
 
+// Fix endBotAttack to avoid duplicate updates
 function endBotAttack(gameState) {
     console.log("=== BOT ENDING ATTACK ===");
     console.log("Current player (attacker):", gameState.currentPlayer);
@@ -2762,6 +2939,7 @@ function endBotAttack(gameState) {
     console.log("Attack cards:", gameState.currentRound.attackCards.length);
     console.log("Defense cards:", gameState.currentRound.defenseCards.length);
   
+    // Mark that the attack is complete
     gameState.attackComplete = true;
   
     // If bot somehow played zero cards, just advance the turn
@@ -2801,25 +2979,31 @@ function endBotAttack(gameState) {
       return;
     }
   
+    // Draw-back up to full hands
     console.log("Drawing cards — attackComplete =", gameState.attackComplete);
     drawUpToSix(gameState);
   
+    // Reset for the next round
     gameState.attackComplete = false;
     gameState.firstCard      = true;
     gameState.player1Hand    = gameState.playerHands[0];
   
+    // Refresh the UI
     updateCardArea(gameState);
     updatePlayerHand(gameState.player1Hand);
     updateOpponentDisplays(gameState);
     updateGameStatus(gameState);
   
+    // Check for game-over
     if (checkGameOver(gameState)) return;
   
+    // If it’s still a bot’s turn, schedule it
     if (gameState.currentPlayer !== 0 && gameState.gameInProgress) {
       console.log("Next player is bot — scheduling botPlay");
       setTimeout(() => botPlay(gameState), 3000);
     }
   
+    // Persist
     localStorage.setItem('durakGameState', JSON.stringify(gameState));
   }
   
@@ -2862,6 +3046,7 @@ function checkAndUpdateElimination(gameState) {
                 gameState.eliminated[i] = true;
                 eliminationsOccurred = true;
                 
+                // Add system message to chat
                 const messageDiv = document.createElement('div');
                 messageDiv.className = 'system-message';
                 messageDiv.textContent = `${gameSettings.playerNames[i]} has left the game.`;
@@ -2870,6 +3055,7 @@ function checkAndUpdateElimination(gameState) {
             }
         }
         
+        // Return true if any eliminations occurred
         return eliminationsOccurred;
     }
     
@@ -2878,11 +3064,13 @@ function checkAndUpdateElimination(gameState) {
 
 
 function checkGameOver(gameState) {
+    // Check if game is already over
     if (!gameState.gameInProgress) return true;
     
     // Stockpile is considered empty when both deck is empty AND kozer is taken
     const isStockpileEmpty = gameState.deck.length === 0 && gameState.kozerTaken;
     
+    // Update elimination status for any players with 0 cards when stockpile is empty
     if (isStockpileEmpty) {
         for (let i = 0; i < gameSettings.numPlayers; i++) {
             if (gameState.playerHands[i].length === 0 && !gameState.eliminated[i]) {
@@ -2899,6 +3087,7 @@ function checkGameOver(gameState) {
         }
     }
     
+    // Count active players
     let activePlayers = 0;
     let lastActivePlayer = -1;
     
@@ -2909,9 +3098,11 @@ function checkGameOver(gameState) {
         }
     }
     
+    // Determine if game is over
     if (activePlayers <= 1) {
         gameState.gameInProgress = false;
         
+        // Display game over message only if it hasn't been shown yet
         if (!gameOverMessageShown) {
             gameOverMessageShown = true;
             
@@ -2928,33 +3119,43 @@ function checkGameOver(gameState) {
             }, 500);
         }
         
+        // Update the game status display
         updateGameStatus(gameState);
         return true;
     }
     
+    // Update the game status display
     updateGameStatus(gameState);
     return false;
 }
 
 function wouldPassOverloadNextDefender(gameState, numCardsToPass) {
+    // Get the next defender (the one who would receive the pass)
     const nextDefender = getNextActivePlayer(gameState, gameState.defender);
     
+    // Calculate how many cards they would need to defend against
     const currentUndefendedCards = gameState.currentRound.attackCards.length - 
                                  gameState.currentRound.defenseCards.length;
     
+    // Add the number of cards being passed
     const totalCardsToDefend = currentUndefendedCards + numCardsToPass;
     
+    // Get the next defender's hand size
     const nextDefenderHandSize = gameState.playerHands[nextDefender].length;
     
+    // Return true if passing would give more cards than they have in hand
     return totalCardsToDefend > nextDefenderHandSize;
 }
 
+// Update the shouldLimitAttack function to be more explicit
 function shouldLimitAttack(gameState) {
     const defenderHand = gameState.playerHands[gameState.defender];
     const undefendedAttacks = gameState.currentRound.attackCards.length - gameState.currentRound.defenseCards.length;
     
+    // Calculate how many more cards the defender could theoretically defend against
     const remainingDefenseCapacity = defenderHand.length - undefendedAttacks;
     
+    // If defender has fewer cards than undefended attacks or no capacity left, limit further attacks
     return remainingDefenseCapacity <= 0;
 }
 
@@ -2962,6 +3163,7 @@ function shouldLimitAttack(gameState) {
 function resetPileOnState(gameState) {
     console.log("Resetting pile-on state");
     
+    // Clear all pile-on related flags
     gameState.pileOnAttacker = null;
     gameState.allPlayersAttacked = false;
     gameState.skipNextPileOnCheck = false;
@@ -2969,12 +3171,15 @@ function resetPileOnState(gameState) {
     gameState.pileOnAttackerCount = 0;
     gameState.lastPileOnAttackTime = null;
     
+    // Additional cleanup for any other pile-on related flags
     if (gameState.waitingForPileOn) {
         delete gameState.waitingForPileOn;
     }
     
+    // Force update button states to ensure UI is responsive
     updateButtonStates(gameState);
     
+    // Verify current player and defender are different
     if (gameState.currentPlayer === gameState.defender && gameState.gameInProgress) {
         console.warn("Detected same player as attacker and defender in resetPileOnState");
         const nextPlayer = getNextActivePlayer(gameState, gameState.currentPlayer);
@@ -3039,7 +3244,59 @@ function checkForDuplicateCard(card, gameState) {
     return false;
 }
 
-
+function recoverFromStuckState() {
+    if (!gameState) return false;
+    
+    console.log("ATTEMPTING TO RECOVER FROM STUCK STATE");
+    
+    // Check if we're in a pile-on phase that might be stuck
+    if (gameState.pileOnAttacker !== null) {
+        console.log("Recovering from stuck pile-on state");
+        
+        // Fully reset pile-on state
+        resetPileOnState(gameState);
+        
+        // If attacks and defenses are equal, end the round successfully
+        if (gameState.currentRound.attackCards.length === gameState.currentRound.defenseCards.length) {
+            processEndOfSuccessfulDefense(gameState);
+        } else {
+            // Otherwise, make defender take cards
+            const defenderHand = gameState.playerHands[gameState.defender];
+            defenderHand.push(...gameState.currentRound.attackCards, ...gameState.currentRound.defenseCards);
+            
+            // Clear current round
+            gameState.currentRound = {
+                attackCards: [],
+                defenseCards: []
+            };
+            
+            // Next attacker is player after defender
+            gameState.currentPlayer = getNextActivePlayer(gameState, gameState.defender);
+            
+            // Next defender is player after new attacker
+            gameState.defender = getNextActivePlayer(gameState, gameState.currentPlayer);
+        }
+        
+        // Force draw cards for everyone
+        drawUpToSix(gameState);
+        
+        // Reset for next round
+        gameState.firstCard = true;
+        
+        // Update all UI elements
+        updateCardArea(gameState);
+        updatePlayerHand(gameState.player1Hand);
+        updateOpponentDisplays(gameState);
+        updateGameStatus(gameState);
+        
+        // Save state
+        localStorage.setItem('durakGameState', JSON.stringify(gameState));
+        
+        return true;
+    }
+    
+    return false;
+}
 
 
 function addEmergencyResetButton() {
@@ -3179,21 +3436,28 @@ function recoverFromStuckState() {
                 defenseCards: []
             };
             
+            // Next attacker is player after defender
             gameState.currentPlayer = getNextActivePlayer(gameState, gameState.defender);
             
+            // Next defender is player after new attacker
             gameState.defender = getNextActivePlayer(gameState, gameState.currentPlayer);
             
+            // Force draw cards for everyone
             drawUpToSix(gameState);
             
+            // Reset for next round
             gameState.firstCard = true;
             
+            // Update all UI elements
             updateCardArea(gameState);
             updatePlayerHand(gameState.player1Hand);
             updateOpponentDisplays(gameState);
             updateGameStatus(gameState);
             
+            // Save state
             localStorage.setItem('durakGameState', JSON.stringify(gameState));
             
+            // If it's a bot's turn, trigger it
             if (gameState.currentPlayer !== 0) {
                 setTimeout(() => botPlay(gameState), 2000);
             }
@@ -3206,10 +3470,13 @@ function recoverFromStuckState() {
     if (gameState.currentPlayer === gameState.defender) {
         console.log("Recovering from self-reference state");
         
+        // Fix player references
         gameState.defender = getNextActivePlayer(gameState, gameState.currentPlayer);
         
+        // Update UI
         updateGameStatus(gameState);
         
+        // Save state
         localStorage.setItem('durakGameState', JSON.stringify(gameState));
         return true;
     }
@@ -3228,6 +3495,7 @@ function recoverFromStuckState() {
             botPlay(gameState);
         }
         
+        // Update timestamp
         sessionStorage.setItem('lastBotActionTime', currentTime.toString());
         return true;
     }
@@ -3248,14 +3516,18 @@ function recoverFromStuckState() {
     gameState.currentPlayer = getNextActivePlayer(gameState, gameState.currentPlayer);
     gameState.defender = getNextActivePlayer(gameState, gameState.currentPlayer);
     
+    // Reset first card flag
     gameState.firstCard = true;
     
+    // Update UI
     updateCardArea(gameState);
     updateGameStatus(gameState);
     updateButtonStates(gameState);
     
+    // Save state
     localStorage.setItem('durakGameState', JSON.stringify(gameState));
     
+    // If it's a bot's turn, trigger it
     if (gameState.currentPlayer !== 0) {
         setTimeout(() => botPlay(gameState), 2000);
     }

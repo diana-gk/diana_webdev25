@@ -309,24 +309,27 @@ body {
 
 
 .card.trump {
-    background-color: #f5f0e0; 
-    box-shadow: 0 0 8px rgba(255, 204, 0, 0.7); 
+    background-color: #f5f0e0; /* Slightly different background for trump cards */
+    box-shadow: 0 0 8px rgba(255, 204, 0, 0.7); /* Golden glow for trump cards */
 }
 
+/* Add a small visual separator between trump and non-trump cards */
 .card.trump-separator {
-    margin-left: 5px; 
+    margin-left: 5px; /* Add slightly more space before the first trump card */
 }
 
+/* Update the hover effect to keep the trump glow */
 .card.trump:hover {
     transform: translateY(-20px);
-    box-shadow: 0 0 12px rgba(255, 204, 0, 0.9); 
+    box-shadow: 0 0 12px rgba(255, 204, 0, 0.9); /* Enhanced glow on hover */
     z-index: 2;
 }
 
+/* Update the selected effect to keep the trump glow */
 .card.trump.selected {
     border: 2px solid #ffcc00;
     transform: translateY(-30px);
-    box-shadow: 0 0 15px rgba(255, 204, 0, 1); 
+    box-shadow: 0 0 15px rgba(255, 204, 0, 1); /* Even stronger glow when selected */
     z-index: 3;
 }
 
@@ -655,11 +658,13 @@ body {
     background-color: #ab5a5a;
 }
 
+/* Add a highlight effect for the player who is currently piling on */
 .opponent.piling-on .player-name {
     color: #ffcc00;
     font-weight: bold;
 }
 
+/* Add a badge for the pile-on phase */
 .game-status.pile-on-phase {
     background-color: rgba(74, 109, 140, 0.7);
     border: 1px solid #ffcc00;
